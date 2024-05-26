@@ -1,0 +1,13 @@
+db:
+  host: localhost
+  user: postgres
+  pass: postgres
+  db: postgres
+  #  port:
+  #  timeZone:
+  #  sslMode:
+
+http_server:
+  port: 8080
+  readTimeout: 10s
+  writeTimeout: 10s
