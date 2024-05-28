@@ -19,9 +19,7 @@ func RunMigration(config ConnectionConfig) {
 
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://infra/db/migrations",
-		"postgres", driver)
+	m, err := migrate.NewWithDatabaseInstance("file://db/migrations", "postgres", driver)
 
 	if err != nil {
 		panic(err)

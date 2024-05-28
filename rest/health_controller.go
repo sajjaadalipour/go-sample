@@ -1,4 +1,4 @@
-package web
+package rest
 
 import (
 	"github.com/labstack/echo/v4"
@@ -8,7 +8,7 @@ import (
 type HealthController struct {
 }
 
-func NewHealthController() HealthController {
+func newHealthController() HealthController {
 	return HealthController{}
 }
 

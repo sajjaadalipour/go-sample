@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"go.uber.org/fx"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -23,7 +24,7 @@ func (c ConnectionConfig) GenerateDsn() string {
 	}
 
 	if c.TimeZone == "" {
-		c.TimeZone = `Asia/Shanghai`
+		c.TimeZone = `UTC`
 	}
 
 	if c.SslMode == "" {
@@ -48,7 +49,7 @@ func (c ConnectionConfig) GenerateDataSourceName() string {
 	}
 
 	if c.TimeZone == "" {
-		c.TimeZone = `Asia/Shanghai`
+		c.TimeZone = `UTC`
 	}
 
 	if c.SslMode == "" {
@@ -66,7 +67,7 @@ func (c ConnectionConfig) GenerateDataSourceName() string {
 	)
 }
 
-func InitConnectionConfig() ConnectionConfig {
+func initConnectionConfig() ConnectionConfig {
 	var connectionConfig ConnectionConfig
 
 	if err := viper.Sub("db").Unmarshal(&connectionConfig); err != nil {
@@ -76,7 +77,9 @@ func InitConnectionConfig() ConnectionConfig {
 	return connectionConfig
 }
 
-func InitGorm(config ConnectionConfig) (*gorm.DB, error) {
+func initGorm(config ConnectionConfig) (*gorm.DB, error) {
 	dsn := config.GenerateDsn()
 	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }
+
+var Provide = fx.Provide(initConnectionConfig, initGorm)
