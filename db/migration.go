@@ -9,17 +9,15 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func RunMigration(config ConnectionConfig) {
-	var datasourceName = config.GenerateDataSourceName()
-
-	db, err := sql.Open("postgres", datasourceName)
+func RunMigration(config DataSourceConfig) {
+	db, err := sql.Open("postgres", config.GenerateDsn())
 	if err != nil {
 		panic(err)
 	}
 
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 
-	m, err := migrate.NewWithDatabaseInstance("file://db/migrations", "postgres", driver)
+	m, err := migrate.NewWithDatabaseInstance("file://db/migrations", config.DB, driver)
 
 	if err != nil {
 		panic(err)

@@ -3,7 +3,7 @@ db:
   user: postgres
   pass: postgres
   db: postgres
-  #  port:
+  port: 5432
   #  timeZone:
   #  sslMode:
 

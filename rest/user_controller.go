@@ -3,14 +3,15 @@ package rest
 import (
 	"github.com/labstack/echo/v4"
 	"net/http"
+	repository "test/repository/user"
 	"test/usecase"
 )
 
 type UserController struct {
-	userService usecase.UserService
+	userService usecase.UserUseCase
 }
 
-func newUserController(userService usecase.UserService) UserController {
+func newUserController(userService usecase.UserUseCase) UserController {
 	return UserController{userService: userService}
 }
 
@@ -34,4 +35,19 @@ func (controller UserController) create(c echo.Context) error {
 	}
 
 	return nil
+}
+
+// DTOs
+
+type UserDto struct {
+	Id    int    `json:"id"`
+	Name  string `json:"name" validate:"required"`
+	Email string `json:"email" validate:"required,email"`
+}
+
+func (u *UserDto) ToUser() repository.User {
+	return repository.User{
+		Name:  u.Name,
+		Email: u.Email,
+	}
 }

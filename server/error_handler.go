@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-const KnownError = "unknown_error"
+const UnknownError = "unknown_error"
 
 type ErrorResponse struct {
 	Code    string `json:"code"`
@@ -26,8 +26,10 @@ func (v ValidationErrorHandler) Support(err error) bool {
 }
 
 func (v ValidationErrorHandler) Handle(err error) (int, ErrorResponse) {
-	//TODO implement me
-	panic("implement me")
+	return http.StatusBadRequest, ErrorResponse{
+		Message: "X not supported!" + err.Error(),
+		Code:    UnknownError,
+	}
 }
 
 type UnknownErrorHandler struct {
@@ -40,7 +42,7 @@ func (u UnknownErrorHandler) Support(_ error) bool {
 func (u UnknownErrorHandler) Handle(err error) (int, ErrorResponse) {
 	return http.StatusInternalServerError, ErrorResponse{
 		Message: "internal server err!" + err.Error(),
-		Code:    KnownError,
+		Code:    UnknownError,
 	}
 }
 
