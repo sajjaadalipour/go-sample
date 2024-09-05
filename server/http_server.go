@@ -21,7 +21,7 @@ type Config struct {
 func initConfig() Config {
 	var config Config
 
-	if err := viper.Sub("http_server").Unmarshal(&config); err != nil {
+	if err := viper.Sub("httpServer").Unmarshal(&config); err != nil {
 		fmt.Printf("Unable to decode http-server Config into struct, %v", err)
 	}
 
